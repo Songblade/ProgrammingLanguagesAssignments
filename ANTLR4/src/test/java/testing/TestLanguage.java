@@ -7,11 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestLanguage {
-    // I am going to have one or two tests for each main thing I am adding
-
-    // I first need to figure out how to even write a test for this
-    // and his tests are buried in abstraction, so it is hard to tell
-    // let's start with STR
+    
     private final UDFParseTreeVisitor visitor;
 
     public TestLanguage() {

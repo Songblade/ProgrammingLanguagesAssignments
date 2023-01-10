@@ -44,17 +44,8 @@ uint readBytesFromFile(FILE *fp, uint byteCount, char *buffer) {
     for (i = 0; i < byteCount; i++) {
         char byte = (char) getc(fp);
         buffer[i] = byte;
-        /*if (byte != EOF) {
-            buffer[i] = byte;
-        } else { // means we reached the end of the file before being done reading,
-            // and we are returning an indication of this
-            //buffer[i] = '\0';
-            return 0;
-        }//*/
+        
     }
-
-    //buffer[i] = '\0'; // adding an end to the String, if it matters
-    // not doing that, in case it is causing problems
 
     return 1; // means operation was successful, file didn't end on us
 }
@@ -75,24 +66,17 @@ uint writeBytesToFile(FILE *fp, uint byteCount, char *buffer) {
 uint convertBytesToUInt(const char* bytes, char numBytes) {
     uint returnValue = 0;
     for (char i = 0; i < numBytes; i++) {
-        //printf("Value of %d: %d\n", i, bytes[i]);
-        // I wouldn't be surprised if this program stopped working for a file of 32,768+ length or height
-        // But I first need to find such a file to make sure
-        // And I can't find such a file, because no one makes bmp files anymore
-        // And since what I have works, and I haven't taken Comp Org yet and so don't yet understand bit-math
-        // I don't want to break what I have, which works for all the files I can test it with
+     
         if (bytes[i] >= 0) {
             returnValue += (bytes[i] << (8 * i));
         } else {
-            //printf("I turned it to %d\n", 128 - (uchar)bytes[i]);
+
             returnValue += ((256 + bytes[i]) << (8 * i));
         }
-        //I need to get -128 to be 128
-        // This is 128 * -1, and also 256 + -128
-        // but also -80 to 176
+    
     }
     return returnValue;
-    //return (uint) (bytes4[0] + (bytes4[1] << 8) + (bytes4[2] << 16) +  (bytes4[3] << 24));
+
 }
 
 /**
@@ -104,24 +88,17 @@ ImageInfo extractDataFromHeader(const char *header) {
     ImageInfo info;
 
     info.dataOffset = convertBytesToUInt(header + DATAOFFSET_OFFSET, 4);
-    //printf("Getting width now:\n");
+
     info.pxWidth = convertBytesToUInt(header + WIDTH_OFFSET, 4);
-    //printf("Getting height now:\n");
-    info.pxHeight = //640;
-        convertBytesToUInt(header + HEIGHT_OFFSET, 4);
-    //printf("Ignore the rest of the prints\n");
+
+    info.pxHeight = convertBytesToUInt(header + HEIGHT_OFFSET, 4);
+ 
     info.bitDepth = convertBytesToUInt(header + BITS_PER_PX_OFFSET, 2);
     info.byteWidth = (uint) ((info.bitDepth * info.pxWidth + 31) / 32.0) * 4;
     info.fileSize = convertBytesToUInt(header + 2, 4);
 
     printf("px width: %d\npx height: %d\nbit depth: %d\nbyte width: %d\ndata offset: 0x%x\n",
            info.pxWidth, info.pxHeight, info.bitDepth, info.byteWidth, info.dataOffset);
-
-    /*px width: 256
-     * px height: 256
-     * bit depth: 24
-     * byte width: 768
-     * data offset: 0x36*/
 
     return info;
 }

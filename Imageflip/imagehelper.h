@@ -19,7 +19,6 @@ typedef unsigned char uchar;
 #define WIDTH_OFFSET 18
 #define HEIGHT_OFFSET 22
 #define BITS_PER_PX_OFFSET 28
-// I have no idea what he wants here, given that the width, height, and bits per pixel are different each file
 
 typedef struct {
     uint dataOffset; // Offset of the image data
